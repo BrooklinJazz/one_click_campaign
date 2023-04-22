@@ -18,8 +18,18 @@ defmodule OneClickCampaignWeb.Router do
   end
 
   scope "/", OneClickCampaignWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
 
+    live "/campaigns", CampaignLive.Index, :index
+    live "/campaigns/new", CampaignLive.Index, :new
+    live "/campaigns/:id/edit", CampaignLive.Index, :edit
+
+    live "/campaigns/:id", CampaignLive.Show, :show
+    live "/campaigns/:id/show/edit", CampaignLive.Show, :edit
+  end
+
+  scope "/", OneClickCampaignWeb do
+    pipe_through :browser
     get "/", PageController, :home
   end
 

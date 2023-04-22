@@ -2,7 +2,9 @@ defmodule OneClickCampaignWeb.ErrorJSONTest do
   use OneClickCampaignWeb.ConnCase, async: true
 
   test "renders 404" do
-    assert OneClickCampaignWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
+    assert OneClickCampaignWeb.ErrorJSON.render("404.json", %{}) == %{
+             errors: %{detail: "Not Found"}
+           }
   end
 
   test "renders 500" do

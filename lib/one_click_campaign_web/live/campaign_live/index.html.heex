@@ -1,0 +1,49 @@
+<.header>
+  Listing Campaigns
+  <:actions>
+    <.link patch={~p"/campaigns/new"}>
+      <.button>New Campaign</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="campaigns"
+  rows={@streams.campaigns}
+  row_click={fn {_id, campaign} -> JS.navigate(~p"/campaigns/#{campaign}") end}
+>
+  <:col :let={{_id, campaign}} label="Name"><%= campaign.name %></:col>
+  <:col :let={{_id, campaign}} label="Setting"><%= campaign.setting %></:col>
+  <:col :let={{_id, campaign}} label="Description"><%= campaign.description %></:col>
+  <:col :let={{_id, campaign}} label="Public"><%= campaign.public %></:col>
+  <:action :let={{_id, campaign}}>
+    <div class="sr-only">
+      <.link navigate={~p"/campaigns/#{campaign}"}>Show</.link>
+    </div>
+    <.link patch={~p"/campaigns/#{campaign}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, campaign}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: campaign.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="campaign-modal"
+  show
+  on_cancel={JS.patch(~p"/campaigns")}
+>
+  <.live_component
+    module={OneClickCampaignWeb.CampaignLive.FormComponent}
+    id={@campaign.id || :new}
+    title={@page_title}
+    action={@live_action}
+    campaign={@campaign}
+    patch={~p"/campaigns"}
+  />
+</.modal>
