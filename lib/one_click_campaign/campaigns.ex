@@ -7,7 +7,7 @@ defmodule OneClickCampaign.Campaigns do
   alias OneClickCampaign.Repo
 
   alias OneClickCampaign.Campaigns.Campaign
-
+  alias OneClickCampaign.AI
   @doc """
   Returns the list of campaigns.
 
@@ -101,5 +101,23 @@ defmodule OneClickCampaign.Campaigns do
   """
   def change_campaign(%Campaign{} = campaign, attrs \\ %{}) do
     Campaign.changeset(campaign, attrs)
+  end
+
+  @doc """
+  Returns a list of 10 campaign setting suggestions
+
+      iex> setting_suggestions()
+      ["High Fantasy", "Dark", ...]
+  """
+  def setting_suggestions do
+    [
+      "Steampunk",
+      "Gothic Horror",
+      "Sword and Sorcery",
+      "Post-Apocalyptic",
+      "Sci-Fi",
+      "Superhero",
+      "Pirate Adventure"
+    ]
   end
 end

@@ -51,7 +51,9 @@ defmodule OneClickCampaign.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:ex_openai, "~> 1.1.0"}
+      # project deps
+      {:ex_openai, "~> 1.1.0"},
+      {:mock, "~> 0.3.6", only: :test, override: true}
     ]
   end
 

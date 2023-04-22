@@ -18,5 +18,11 @@ config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: OneClickCampaign
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :one_click_campaign, ai_chat_service: ExOpenAI.Chat
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+
+config :ex_openai,
+  api_key: System.get_env("OPEN_API_KEY"),
+  organization_key: System.get_env("ORGANIZATION_KEY"),
+  http_options: [recv_timeout: 30_000]

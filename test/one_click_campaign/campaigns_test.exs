@@ -15,7 +15,7 @@ defmodule OneClickCampaign.CampaignsTest do
       user1 = user_fixture()
       user2 = user_fixture()
       owned_campaign = campaign_fixture(user_id: user1.id)
-      unowned_campaign = campaign_fixture(user_id: user2.id)
+      _unowned_campaign = campaign_fixture(user_id: user2.id)
       assert Campaigns.list_campaigns(user1.id) == [owned_campaign]
     end
 
