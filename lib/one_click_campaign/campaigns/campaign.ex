@@ -15,7 +15,8 @@ defmodule OneClickCampaign.Campaigns.Campaign do
   @doc false
   def changeset(campaign, attrs) do
     campaign
-    |> cast(attrs, [:name, :setting, :description, :public])
-    |> validate_required([:name, :setting, :description, :public])
+    |> cast(attrs, [:name, :setting, :description, :public, :user_id])
+    |> validate_required([:name, :setting, :description, :public, :user_id])
+    |> foreign_key_constraint(:user_id)
   end
 end

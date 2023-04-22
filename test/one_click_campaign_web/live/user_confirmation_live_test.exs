@@ -82,7 +82,7 @@ defmodule OneClickCampaignWeb.UserConfirmationLiveTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
                "User confirmation link is invalid or it has expired"
 
-      # refute Accounts.get_user!(user.id).confirmed_at
+      refute Accounts.get_user!(user.id).confirmed_at
     end
   end
 end

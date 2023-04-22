@@ -71,7 +71,7 @@ defmodule OneClickCampaignWeb.CampaignLive.FormComponent do
   end
 
   defp save_campaign(socket, :new, campaign_params) do
-    case Campaigns.create_campaign(campaign_params) do
+    case Campaigns.create_campaign(Map.put(campaign_params, "user_id", socket.assigns.user_id)) do
       {:ok, campaign} ->
         notify_parent({:saved, campaign})
 

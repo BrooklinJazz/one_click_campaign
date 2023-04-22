@@ -6,7 +6,7 @@ defmodule OneClickCampaignWeb.CampaignLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :campaigns, Campaigns.list_campaigns())}
+    {:ok, stream(socket, :campaigns, Campaigns.list_campaigns(socket.assigns.current_user.id))}
   end
 
   @impl true
@@ -14,10 +14,10 @@ defmodule OneClickCampaignWeb.CampaignLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
+  defp apply_action(socket, :edit, %{"campaign_id" => campaign_id}) do
     socket
     |> assign(:page_title, "Edit Campaign")
-    |> assign(:campaign, Campaigns.get_campaign!(id))
+    |> assign(:campaign, Campaigns.get_campaign!(campaign_id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -38,8 +38,8 @@ defmodule OneClickCampaignWeb.CampaignLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    campaign = Campaigns.get_campaign!(id)
+  def handle_event("delete", %{"campaign_id" => campaign_id}, socket) do
+    campaign = Campaigns.get_campaign!(campaign_id)
     {:ok, _} = Campaigns.delete_campaign(campaign)
 
     {:noreply, stream_delete(socket, :campaigns, campaign)}

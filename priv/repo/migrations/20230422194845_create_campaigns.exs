@@ -7,7 +7,7 @@ defmodule OneClickCampaign.Repo.Migrations.CreateCampaigns do
       add :setting, :text
       add :description, :text
       add :public, :boolean, default: false, null: false
-      add :user_id, references(:users, on_delete: :nothing)
+      add :user_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps()
     end

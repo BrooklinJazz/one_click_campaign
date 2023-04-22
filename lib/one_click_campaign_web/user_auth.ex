@@ -5,6 +5,7 @@ defmodule OneClickCampaignWeb.UserAuth do
   import Phoenix.Controller
 
   alias OneClickCampaign.Accounts
+  alias OneClickCampaign.Campaigns
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -207,6 +208,23 @@ defmodule OneClickCampaignWeb.UserAuth do
       |> put_flash(:error, "You must log in to access this page.")
       |> maybe_store_return_to()
       |> redirect(to: ~p"/users/log_in")
+      |> halt()
+    end
+  end
+
+  @doc """
+  Used for routes that require the user to own the campaign
+  """
+  def require_user_owns_campaign(conn, _opts) do
+    campaign = Campaigns.get_campaign!(conn.params["campaign_id"])
+
+    if conn.assigns[:current_user].id == campaign.user_id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must belong to this campaign to access this page.")
+      |> maybe_store_return_to()
+      |> redirect(to: ~p"/campaigns")
       |> halt()
     end
   end

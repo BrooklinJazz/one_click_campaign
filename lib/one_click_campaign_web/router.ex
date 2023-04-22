@@ -20,12 +20,23 @@ defmodule OneClickCampaignWeb.Router do
   scope "/", OneClickCampaignWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/campaigns", CampaignLive.Index, :index
-    live "/campaigns/new", CampaignLive.Index, :new
-    live "/campaigns/:id/edit", CampaignLive.Index, :edit
+    live_session :require_authenticated_user,
+      on_mount: [{OneClickCampaignWeb.UserAuth, :ensure_authenticated}] do
+      live "/campaigns", CampaignLive.Index, :index
+      live "/campaigns/new", CampaignLive.Index, :new
+    end
+  end
 
-    live "/campaigns/:id", CampaignLive.Show, :show
-    live "/campaigns/:id/show/edit", CampaignLive.Show, :edit
+  scope "/", OneClickCampaignWeb do
+    pipe_through [:browser, :require_authenticated_user, :require_user_owns_campaign]
+
+    live_session :require_user_owns_campaign,
+      on_mount: [{OneClickCampaignWeb.UserAuth, :ensure_authenticated}] do
+      live "/campaigns/:campaign_id/edit", CampaignLive.Index, :edit
+
+      live "/campaigns/:campaign_id", CampaignLive.Show, :show
+      live "/campaigns/:campaign_id/show/edit", CampaignLive.Show, :edit
+    end
   end
 
   scope "/", OneClickCampaignWeb do
@@ -74,7 +85,7 @@ defmodule OneClickCampaignWeb.Router do
   scope "/", OneClickCampaignWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live_session :require_authenticated_user,
+    live_session :user_settings,
       on_mount: [{OneClickCampaignWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email

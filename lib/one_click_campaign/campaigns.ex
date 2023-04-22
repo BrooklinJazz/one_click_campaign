@@ -13,12 +13,13 @@ defmodule OneClickCampaign.Campaigns do
 
   ## Examples
 
-      iex> list_campaigns()
+      iex> list_campaigns(user_id)
       [%Campaign{}, ...]
 
   """
-  def list_campaigns do
-    Repo.all(Campaign)
+  def list_campaigns(user_id) do
+    from(c in Campaign, where: c.user_id == ^user_id)
+    |> Repo.all()
   end
 
   @doc """

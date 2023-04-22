@@ -19,16 +19,11 @@ defmodule OneClickCampaignWeb.CampaignLiveTest do
   }
   @invalid_attrs %{description: nil, name: nil, public: false, setting: nil}
 
-  defp create_campaign(_) do
-    campaign = campaign_fixture()
-    %{campaign: campaign}
-  end
-
   describe "Index" do
-    setup [:create_campaign]
-
-    test "lists all campaigns", %{conn: conn, campaign: campaign} do
-      conn = log_in_user(conn, user_fixture())
+    test "lists all campaigns", %{conn: conn} do
+      user = user_fixture()
+      campaign = campaign_fixture(user_id: user.id)
+      conn = log_in_user(conn, user)
       {:ok, _index_live, html} = live(conn, ~p"/campaigns")
 
       assert html =~ "Listing Campaigns"
@@ -59,8 +54,10 @@ defmodule OneClickCampaignWeb.CampaignLiveTest do
       assert html =~ "some description"
     end
 
-    test "updates campaign in listing", %{conn: conn, campaign: campaign} do
-      conn = log_in_user(conn, user_fixture())
+    test "updates campaign in listing", %{conn: conn} do
+      user = user_fixture()
+      campaign = campaign_fixture(user_id: user.id)
+      conn = log_in_user(conn, user)
       {:ok, index_live, _html} = live(conn, ~p"/campaigns")
 
       assert index_live |> element("#campaigns-#{campaign.id} a", "Edit") |> render_click() =~
@@ -83,8 +80,10 @@ defmodule OneClickCampaignWeb.CampaignLiveTest do
       assert html =~ "some updated description"
     end
 
-    test "deletes campaign in listing", %{conn: conn, campaign: campaign} do
-      conn = log_in_user(conn, user_fixture())
+    test "deletes campaign in listing", %{conn: conn} do
+      user = user_fixture()
+      campaign = campaign_fixture(user_id: user.id)
+      conn = log_in_user(conn, user)
       {:ok, index_live, _html} = live(conn, ~p"/campaigns")
 
       assert index_live |> element("#campaigns-#{campaign.id} a", "Delete") |> render_click()
@@ -93,18 +92,20 @@ defmodule OneClickCampaignWeb.CampaignLiveTest do
   end
 
   describe "Show" do
-    setup [:create_campaign]
-
-    test "displays campaign", %{conn: conn, campaign: campaign} do
-      conn = log_in_user(conn, user_fixture())
+    test "displays campaign", %{conn: conn} do
+      user = user_fixture()
+      campaign = campaign_fixture(user_id: user.id)
+      conn = log_in_user(conn, user)
       {:ok, _show_live, html} = live(conn, ~p"/campaigns/#{campaign}")
 
       assert html =~ "Show Campaign"
       assert html =~ campaign.description
     end
 
-    test "updates campaign within modal", %{conn: conn, campaign: campaign} do
-      conn = log_in_user(conn, user_fixture())
+    test "updates campaign within modal", %{conn: conn} do
+      user = user_fixture()
+      campaign = campaign_fixture(user_id: user.id)
+      conn = log_in_user(conn, user)
       {:ok, show_live, _html} = live(conn, ~p"/campaigns/#{campaign}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
