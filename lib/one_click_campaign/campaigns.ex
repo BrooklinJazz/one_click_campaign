@@ -8,6 +8,7 @@ defmodule OneClickCampaign.Campaigns do
 
   alias OneClickCampaign.Campaigns.Campaign
   alias OneClickCampaign.AI
+
   @doc """
   Returns the list of campaigns.
 
