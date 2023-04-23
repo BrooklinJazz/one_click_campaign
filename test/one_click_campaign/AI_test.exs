@@ -37,10 +37,7 @@ defmodule OneClickCampaign.AITest do
       assert_called(
         ExOpenAI.Chat.create_chat_completion(
           [%{role: "user", content: "example question"}],
-          "gpt-3.5-turbo",
-          logit_bias: %{
-            "8043" => -100
-          }
+          "gpt-3.5-turbo"
         )
       )
     end

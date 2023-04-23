@@ -6,6 +6,7 @@ defmodule OneClickCampaign.Organizations.Organization do
     field :description, :string
     field :name, :string
     field :campaign_id, :id
+    has_many :npcs, OneClickCampaign.NPCs.NPC
 
     timestamps()
   end

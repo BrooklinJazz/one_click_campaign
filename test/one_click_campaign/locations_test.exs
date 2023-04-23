@@ -32,7 +32,12 @@ defmodule OneClickCampaign.LocationsTest do
     test "create_location/1 with valid data creates a location" do
       user = user_fixture()
       campaign = campaign_fixture(user_id: user.id)
-      valid_attrs = %{description: "some description", name: "some name", campaign_id: campaign.id}
+
+      valid_attrs = %{
+        description: "some description",
+        name: "some name",
+        campaign_id: campaign.id
+      }
 
       assert {:ok, %Location{} = location} = Locations.create_location(valid_attrs)
       assert location.description == "some description"
@@ -43,14 +48,20 @@ defmodule OneClickCampaign.LocationsTest do
       user = user_fixture()
       campaign = campaign_fixture(user_id: user.id)
       parent_location = location_fixture(campaign_id: campaign.id)
-      valid_attrs = %{description: "some description", name: "some name", campaign_id: campaign.id, parent_location_id: parent_location.id}
+
+      valid_attrs = %{
+        description: "some description",
+        name: "some name",
+        campaign_id: campaign.id,
+        parent_location_id: parent_location.id
+      }
 
       assert {:ok, %Location{} = location} = Locations.create_location(valid_attrs)
       assert location.description == "some description"
       assert location.name == "some name"
 
       assert Repo.preload(parent_location, :locations).locations == [location]
-      assert Repo.preload(location, :parent_location) == parent_location
+      assert Repo.preload(location, :parent_location).parent_location_id == parent_location.id
     end
 
     test "create_location/1 with invalid data returns error changeset" do

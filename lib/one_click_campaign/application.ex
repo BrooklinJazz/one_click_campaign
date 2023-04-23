@@ -19,7 +19,6 @@ defmodule OneClickCampaign.Application do
       # Start the Endpoint (http/https)
       OneClickCampaignWeb.Endpoint
       # Start a worker by calling: OneClickCampaign.Worker.start_link(arg)
-      # {OneClickCampaign.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

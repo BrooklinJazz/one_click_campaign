@@ -8,6 +8,7 @@ defmodule OneClickCampaign.NPCsTest do
 
     import OneClickCampaign.NPCsFixtures
     import OneClickCampaign.CampaignsFixtures
+    import OneClickCampaign.OrganizationsFixtures
     import OneClickCampaign.AccountsFixtures
 
     @invalid_attrs %{description: nil, name: nil}
@@ -29,11 +30,33 @@ defmodule OneClickCampaign.NPCsTest do
     test "create_npc/1 with valid data creates a npc" do
       user = user_fixture()
       campaign = campaign_fixture(user_id: user.id)
-      valid_attrs = %{description: "some description", name: "some name", campaign_id: campaign.id}
+
+      valid_attrs = %{
+        description: "some description",
+        name: "some name",
+        campaign_id: campaign.id
+      }
 
       assert {:ok, %NPC{} = npc} = NPCs.create_npc(valid_attrs)
       assert npc.description == "some description"
       assert npc.name == "some name"
+    end
+
+    test "create_npc/1 with valid data for organization " do
+      user = user_fixture()
+      campaign = campaign_fixture(user_id: user.id)
+      organization = organization_fixture(campaign_id: campaign.id)
+
+      valid_attrs = %{
+        description: "some description",
+        name: "some name",
+        campaign_id: campaign.id,
+        organization_id: organization.id
+      }
+
+      assert {:ok, %NPC{} = npc} = NPCs.create_npc(valid_attrs)
+      assert Repo.preload(npc, :organization).organization == organization
+      assert Repo.preload(organization, :npcs).npcs == [npc]
     end
 
     test "create_npc/1 with invalid data returns error changeset" do

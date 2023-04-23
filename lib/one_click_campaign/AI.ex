@@ -4,7 +4,6 @@ defmodule OneClickCampaign.AI do
   """
 
   require Logger
-
   @spec prompt(String.t()) :: String.t()
   def prompt(message) do
     with {:ok,
@@ -13,10 +12,7 @@ defmodule OneClickCampaign.AI do
           }} <-
            service().create_chat_completion(
              [%{role: "user", content: message}],
-             "gpt-3.5-turbo",
-             logit_bias: %{
-               "8043" => -100
-             }
+             "gpt-3.5-turbo"
            ) do
       Logger.info("""
       Asking:
@@ -32,7 +28,7 @@ defmodule OneClickCampaign.AI do
   end
 
   # used to create fake responses similar to ExOpenAPI
-  def create_chat_completion(_msgs, _model, _opts) do
+  def create_chat_completion(_msgs, _model, _opts \\ []) do
     {:ok,
      %ExOpenAI.Components.CreateChatCompletionResponse{
        choices: [%{message: %{content: "EXAMPLE AI GENERATED CONTENT"}}],

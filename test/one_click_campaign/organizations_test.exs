@@ -32,7 +32,12 @@ defmodule OneClickCampaign.OrganizationsTest do
     test "create_organization/1 with valid data creates a organization" do
       user = user_fixture()
       campaign = campaign_fixture(user_id: user.id)
-      valid_attrs = %{description: "some description", name: "some name", campaign_id: campaign.id}
+
+      valid_attrs = %{
+        description: "some description",
+        name: "some name",
+        campaign_id: campaign.id
+      }
 
       assert {:ok, %Organization{} = organization} =
                Organizations.create_organization(valid_attrs)
