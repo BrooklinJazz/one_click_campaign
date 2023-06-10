@@ -18,25 +18,13 @@ defmodule OneClickCampaignWeb.Router do
   end
 
   scope "/", OneClickCampaignWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser]
+    live "/npcs", NPCLive.Index, :index
+    live "/npcs/new", NPCLive.Index, :new
+    live "/npcs/:id/edit", NPCLive.Index, :edit
 
-    live_session :require_authenticated_user,
-      on_mount: [{OneClickCampaignWeb.UserAuth, :ensure_authenticated}] do
-      live "/campaigns", CampaignLive.Index, :index
-      live "/campaigns/new", CampaignLive.Index, :new
-    end
-  end
-
-  scope "/", OneClickCampaignWeb do
-    pipe_through [:browser, :require_authenticated_user, :require_user_owns_campaign]
-
-    live_session :require_user_owns_campaign,
-      on_mount: [{OneClickCampaignWeb.UserAuth, :ensure_authenticated}] do
-      live "/campaigns/:campaign_id/edit", CampaignLive.Index, :edit
-
-      live "/campaigns/:campaign_id", CampaignLive.Show, :show
-      live "/campaigns/:campaign_id/show/edit", CampaignLive.Show, :edit
-    end
+    live "/npcs/:id", NPCLive.Show, :show
+    live "/npcs/:id/show/edit", NPCLive.Show, :edit
   end
 
   scope "/", OneClickCampaignWeb do

@@ -3,10 +3,12 @@ defmodule OneClickCampaign.NPCs.NPC do
   import Ecto.Changeset
 
   schema "npcs" do
-    field :description, :string
     field :name, :string
-    field :campaign_id, :id
-    belongs_to :organization, OneClickCampaign.Organizations.Organization
+    field :description, :string
+    field :image, :string
+    field :seed, :integer
+    field :prompt, :string
+    field :user_id, :id
 
     timestamps()
   end
@@ -14,9 +16,7 @@ defmodule OneClickCampaign.NPCs.NPC do
   @doc false
   def changeset(npc, attrs) do
     npc
-    |> cast(attrs, [:name, :description, :campaign_id, :organization_id])
-    |> validate_required([:name, :description, :campaign_id])
-    |> foreign_key_constraint(:campaign_id)
-    |> foreign_key_constraint(:organization_id)
+    |> cast(attrs, [:name, :prompt, :description, :image, :seed])
+    |> validate_required([:name, :prompt, :description, :image, :seed])
   end
 end

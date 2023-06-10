@@ -79,6 +79,6 @@ config :phoenix, :plug_init_mode, :runtime
 config :swoosh, :api_client, false
 
 config :ex_openai,
-  api_key: System.get_env("OPEN_API_KEY"),
+  api_key: System.get_env("OPENAI_API_KEY"),
   organization_key: System.get_env("ORGANIZATION_KEY"),
-  http_options: [recv_timeout: 30_000]
+  http_options: [recv_timeout: 50_000]

@@ -212,23 +212,6 @@ defmodule OneClickCampaignWeb.UserAuth do
     end
   end
 
-  @doc """
-  Used for routes that require the user to own the campaign
-  """
-  def require_user_owns_campaign(conn, _opts) do
-    campaign = Campaigns.get_campaign!(conn.params["campaign_id"])
-
-    if conn.assigns[:current_user].id == campaign.user_id do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You must belong to this campaign to access this page.")
-      |> maybe_store_return_to()
-      |> redirect(to: ~p"/campaigns")
-      |> halt()
-    end
-  end
-
   defp put_token_in_session(conn, token) do
     conn
     |> put_session(:user_token, token)

@@ -8,7 +8,7 @@ defmodule OneClickCampaign.NPCsTest do
 
     import OneClickCampaign.NPCsFixtures
 
-    @invalid_attrs %{description: nil, name: nil}
+    @invalid_attrs %{name: nil, description: nil, image: nil, seed: nil, prompt: nil}
 
     test "list_npcs/0 returns all npcs" do
       npc = npc_fixture()
@@ -21,11 +21,20 @@ defmodule OneClickCampaign.NPCsTest do
     end
 
     test "create_npc/1 with valid data creates a npc" do
-      valid_attrs = %{description: "some description", name: "some name"}
+      valid_attrs = %{
+        name: "some name",
+        description: "some description",
+        image: "some image",
+        seed: 42,
+        prompt: "some prompt"
+      }
 
       assert {:ok, %NPC{} = npc} = NPCs.create_npc(valid_attrs)
-      assert npc.description == "some description"
       assert npc.name == "some name"
+      assert npc.description == "some description"
+      assert npc.image == "some image"
+      assert npc.seed == 42
+      assert npc.prompt == "some prompt"
     end
 
     test "create_npc/1 with invalid data returns error changeset" do
@@ -34,11 +43,21 @@ defmodule OneClickCampaign.NPCsTest do
 
     test "update_npc/2 with valid data updates the npc" do
       npc = npc_fixture()
-      update_attrs = %{description: "some updated description", name: "some updated name"}
+
+      update_attrs = %{
+        name: "some updated name",
+        description: "some updated description",
+        image: "some updated image",
+        seed: 43,
+        prompt: "some updated prompt"
+      }
 
       assert {:ok, %NPC{} = npc} = NPCs.update_npc(npc, update_attrs)
-      assert npc.description == "some updated description"
       assert npc.name == "some updated name"
+      assert npc.description == "some updated description"
+      assert npc.image == "some updated image"
+      assert npc.seed == 43
+      assert npc.prompt == "some updated prompt"
     end
 
     test "update_npc/2 with invalid data returns error changeset" do

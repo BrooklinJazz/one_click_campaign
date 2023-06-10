@@ -4,13 +4,15 @@ defmodule OneClickCampaign.Repo.Migrations.CreateNpcs do
   def change do
     create table(:npcs) do
       add :name, :string
+      add :prompt, :text
       add :description, :text
-      add :campaign_id, references(:campaigns, on_delete: :delete_all), null: false
-      add :organization_id, references(:organizations, on_delete: :nothing)
+      add :image, :text
+      add :seed, :integer
+      add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:npcs, [:campaign_id])
+    create index(:npcs, [:user_id])
   end
 end
