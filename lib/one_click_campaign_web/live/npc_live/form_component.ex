@@ -17,6 +17,13 @@ defmodule OneClickCampaignWeb.NPCLive.FormComponent do
           <.button phx-disable-with="Generating...">Generate</.button>
         </:actions>
       </.simple_form>
+      <.simple_form for={%{}} id="npc-image-prompt" phx-target={@myself} phx-submit="generate-image">
+        <.input id="prompt-response" type="hidden" name="prompt" value={@description} />
+        <:actions>
+          <.button phx-disable-with="Generating...">Generate Image</.button>
+        </:actions>
+      </.simple_form>
+      <img src={assigns[:image]}/>
       <.simple_form
         for={@form}
         id="npc-form"
@@ -72,6 +79,23 @@ defmodule OneClickCampaignWeb.NPCLive.FormComponent do
     #  {:ok, pid} = MyStreamingClient.start_link nil
     # ExOpenAI.Completions.create_completion "text-davinci-003", prompt: "hello world", stream: true, stream_to: pid
     IO.inspect(content, label: "MY API CONTENT")
+    {:noreply, socket}
+  end
+
+  def handle_event("generate-image", params, socket) do
+    {:ok, response} = ExOpenAI.Images.create_image(params["prompt"])
+    IO.inspect(params, label: "image params")
+
+    %ExOpenAI.Components.ImagesResponse{
+      data: [
+        %{
+          url: url
+        }
+      ]
+    } = response
+
+    IO.inspect(url)
+      socket = assign(socket, image: url)
     {:noreply, socket}
   end
 

@@ -51,6 +51,7 @@
     action={@live_action}
     npc={@npc}
     patch={~p"/npcs"}
+    description={@description}
   />
   <div phx-update="stream" id="prompt-response" phx-no-format><%= for {_,%{id: id, word: word}} <- @streams.description do %><%= word %><% end %></div>
 </.modal>

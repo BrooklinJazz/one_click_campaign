@@ -22,6 +22,7 @@ defmodule OneClickCampaignWeb.NPCLive.Index do
             :noreply,
             socket
             |> assign(:id, socket.assigns.id + 1)
+            |> assign(:description, socket.assigns.description <> content)
             |> stream_insert(:description, %{id: "#{socket.assigns.id}", word: content})
           }
 
@@ -48,6 +49,7 @@ defmodule OneClickCampaignWeb.NPCLive.Index do
   def mount(_params, _session, socket) do
     {:ok,
      socket
+     |> assign(:description, "")
      |> assign(:id, 1)
      |> stream(:description, [])
      |> stream(:npcs, NPCs.list_npcs())}
